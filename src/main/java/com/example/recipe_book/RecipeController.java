@@ -2,11 +2,14 @@ package com.example.recipe_book;
 
 import com.example.recipe_book.model.Ingredient;
 import com.example.recipe_book.model.Recipe;
+import com.example.recipe_book.model.RecipeView;
 import com.example.recipe_book.model.Tag;
 import com.example.recipe_book.model.Unit;
 
 //import com.example.recipe_book.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,13 +26,18 @@ public class RecipeController {
     @Autowired
     private RecipeService recipeService;
 
+    @GetMapping("/test")
+    public List<RecipeView[]> getRecipes() {
+        return recipeService.getRecipes();
+    }
+
     @GetMapping
-    public List<Recipe[]> getAllRecipes() {
+    public List<RecipeView[]> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
     @GetMapping("/{id}")
-    public Recipe getRecipeById(@PathVariable Long id) {
+    public RecipeView getRecipeById(@PathVariable Long id) {
         return recipeService.getRecipeById(id);
     }
 
@@ -61,5 +69,17 @@ public class RecipeController {
     @PostMapping("/ingredients")
     public Ingredient createIngredient(@RequestBody Ingredient ingRequest) {
         return recipeService.createIngredient(ingRequest.getName());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO recipeDto) {
+        try {
+            Recipe createdRecipe = recipeService.createRecipe(recipeDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdRecipe);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create recipe: " + e.getMessage());
+        }
     }
 }

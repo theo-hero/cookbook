@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.example.recipe_book.RecipeIngredient;
+import com.example.recipe_book.RecipeIngredients;
 
 @Entity
 public class Recipe {
@@ -21,9 +21,9 @@ public class Recipe {
     private String img_url;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<RecipeIngredient> ingredients = new ArrayList<>();
+    private List<RecipeIngredients> ingredients = new ArrayList<>();
 
-    // @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    // @ManyToMany(fetch = FetchType.LAZY)
     // @JoinTable(
     //     name = "recipe_tags",
     //     joinColumns = @JoinColumn(name = "recipe_id"),
@@ -71,11 +71,11 @@ public class Recipe {
         this.img_url = img_url;
     }
 
-    public List<RecipeIngredient> getIngredients() {
+    public List<RecipeIngredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<RecipeIngredient> ingredients) {
+    public void setIngredients(List<RecipeIngredients> ingredients) {
         this.ingredients = ingredients;
     }
 

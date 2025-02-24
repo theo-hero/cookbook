@@ -1,14 +1,30 @@
-package com.example.recipe_book;
+package com.example.recipe_book.model;
 
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-public class RecipeDTO {
+@Entity
+@org.hibernate.annotations.Immutable 
+@Table(name = "recipe_view") 
+public class RecipeView {
+
+    @Id
+    private Long id;
     private String title;
     private String description;
     private String instruction;
     private String img_url;
-    private List<RecipeIngredientDTO> ingredients;
-    // private List<String> tags;
+    private String ingredients; 
+    private String tags; 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -34,28 +50,27 @@ public class RecipeDTO {
         this.instruction = instruction;
     }
 
-    public String getImgUrl() {
+    public String getImageURL() {
         return img_url;
     }
 
-    public void setImgUrl(String img_url) {
+    public void setImageURL(String img_url) {
         this.img_url = img_url;
     }
 
-    public List<RecipeIngredientDTO> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<RecipeIngredientDTO> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
-    // public List<String> getTags() {
-    //     return tags;
-    // }
+    public String getTags() {
+        return tags;
+    }
 
-    // public void setTags(List<String> tags) {
-    //     this.tags = tags;
-    // }
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
 }
-

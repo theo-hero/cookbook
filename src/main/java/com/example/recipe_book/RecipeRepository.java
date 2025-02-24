@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.recipe_book.model.Recipe;
+import com.example.recipe_book.model.RecipeView;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     @Query(value = "SELECT name FROM tag", nativeQuery = true)
-    List<String> findAllTagNames(); 
+    List<String> findAllTagNames();
 
     @Query(value = "SELECT name FROM ingredient", nativeQuery = true)
     List<String> findAllIngredientNames();
@@ -22,8 +23,38 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     List<String> findAllUnitNames();
 
     @Query(value = "SELECT * FROM recipe_view rv", nativeQuery = true)
-    List<Recipe[]> findAllRecipeDetails();
+    List<RecipeView[]> findAllRecipeDetails();
 
     @Query(value = "SELECT * FROM recipe_view rv WHERE rv.id = :recipeId", nativeQuery = true)
-    Recipe findRecipeDetailsById(@Param("recipeId") Long recipeId);
+    RecipeView findRecipeDetailsById(@Param("recipeId") Long recipeId);
+
+    @Query(value = "SELECT " +
+            "r.id, " +
+            "r.title, " +
+            "r.description, " +
+            "r.instruction, " +
+            "r.img_url, " +
+            "COALESCE(jsonb_agg( " +
+            "DISTINCT jsonb_build_object( " +
+            "'ingredientName', i.name, " +
+            "'quantity', ri.quantity, " +
+            "'unitName', u.name " +
+            ") " +
+            ") FILTER (WHERE ri.recipe_id IS NOT NULL), '[]') AS ingredients, " +
+            "COALESCE(jsonb_agg(DISTINCT t.name) FILTER (WHERE rt.recipe_id IS NOT NULL), '[]') AS tags " +
+            "FROM " +
+            "recipe r " +
+            "LEFT JOIN " +
+            "recipe_ingredients ri ON r.id = ri.recipe_id " +
+            "LEFT JOIN " +
+            "ingredient i ON ri.ingredient_id = i.id " +
+            "LEFT JOIN " +
+            "unit u ON ri.unit_id = u.id " +
+            "LEFT JOIN " +
+            "recipe_tags rt ON r.id = rt.recipe_id " +
+            "LEFT JOIN " +
+            "tag t ON rt.tag_id = t.id " +
+            "GROUP BY " +
+            "r.id, r.title, r.description, r.instruction, r.img_url", nativeQuery = true)
+    List<RecipeView[]> findRecipes();
 }

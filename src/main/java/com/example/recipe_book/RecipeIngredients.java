@@ -4,14 +4,10 @@ import com.example.recipe_book.model.Ingredient;
 import com.example.recipe_book.model.Recipe;
 import com.example.recipe_book.model.Unit;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
 
 @Entity
-public class RecipeIngredient {
+public class RecipeIngredients {
     @EmbeddedId
     private RecipeIngredientId id;
 
