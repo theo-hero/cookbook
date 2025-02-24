@@ -16,8 +16,16 @@ public class RecipeController {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @GetMapping
-    public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+    @Autowired
+    private RecipeService recipeService;
+
+    // @GetMapping
+    // public List<Recipe> getAllRecipes() {
+    //     return recipeRepository.findAll();
+    // }
+
+    @GetMapping("/tags")
+    public List<String> getAllTags() {
+        return recipeService.getAllTags();
     }
 }
