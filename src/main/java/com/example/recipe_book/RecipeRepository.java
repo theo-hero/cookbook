@@ -12,11 +12,14 @@ import java.util.List;
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     @Query(value = "SELECT name FROM tag", nativeQuery = true)
-    List<String> findAllTagNames(); // Ensure this method is defined here
+    List<String> findAllTagNames(); 
 
     @Query(value = "SELECT name FROM ingredient", nativeQuery = true)
     List<String> findAllIngredientNames();
 
     @Query(value = "SELECT name FROM unit", nativeQuery = true)
     List<String> findAllUnitNames();
+
+    @Query(value = "SELECT * FROM recipe_view rv", nativeQuery = true)
+    List<Recipe[]> findAllRecipeDetails();
 }

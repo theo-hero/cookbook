@@ -14,18 +14,25 @@ import java.util.List;
 public class RecipeController {
 
     @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
     private RecipeService recipeService;
 
-    // @GetMapping
-    // public List<Recipe> getAllRecipes() {
-    //     return recipeRepository.findAll();
-    // }
+    @GetMapping
+    public List<Recipe[]> getAllRecipes() {
+        return recipeService.getAllRecipes();
+    }
 
     @GetMapping("/tags")
     public List<String> getAllTags() {
         return recipeService.getAllTags();
+    }
+
+    @GetMapping("/ingredients")
+    public List<String> getAllIngredients() {
+        return recipeService.getAllIngredients();
+    }
+
+    @GetMapping("/units")
+    public List<String> getAllUnits() {
+        return recipeService.getAllUnits();
     }
 }
