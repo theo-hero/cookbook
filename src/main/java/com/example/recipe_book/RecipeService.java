@@ -32,6 +32,11 @@ public class RecipeService {
         return rows;
     }
 
+    public Recipe getRecipeById(Long id) {
+        Recipe recipe = recipeRepository.findRecipeDetailsById(id);
+        return recipe;
+    }
+
     public List<String> getAllTags() {
         return recipeRepository.findAllTagNames();
     }

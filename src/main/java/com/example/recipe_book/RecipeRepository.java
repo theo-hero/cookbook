@@ -2,6 +2,7 @@ package com.example.recipe_book;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.recipe_book.model.Recipe;
@@ -22,4 +23,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
 
     @Query(value = "SELECT * FROM recipe_view rv", nativeQuery = true)
     List<Recipe[]> findAllRecipeDetails();
+
+    @Query(value = "SELECT * FROM recipe_view rv WHERE rv.id = :recipeId", nativeQuery = true)
+    Recipe findRecipeDetailsById(@Param("recipeId") Long recipeId);
 }
