@@ -1,6 +1,8 @@
 package com.example.recipe_book;
 
+import com.example.recipe_book.model.Ingredient;
 import com.example.recipe_book.model.Recipe;
+import com.example.recipe_book.model.Tag;
 import com.example.recipe_book.model.Unit;
 
 //import com.example.recipe_book.RecipeRepository;
@@ -43,5 +45,15 @@ public class RecipeController {
     @PostMapping("/units")
     public Unit createUnit(@RequestBody Unit unitRequest) {
         return recipeService.createUnit(unitRequest.getName());
+    }
+
+    @PostMapping("/tags")
+    public Tag createTag(@RequestBody Tag tagRequest) {
+        return recipeService.createTag(tagRequest.getName());
+    }
+
+    @PostMapping("/ingredients")
+    public Ingredient createIngredient(@RequestBody Ingredient ingRequest) {
+        return recipeService.createIngredient(ingRequest.getName());
     }
 }
