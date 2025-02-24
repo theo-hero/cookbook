@@ -30,13 +30,8 @@ public class RecipeService {
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    public List<RecipeView[]> getRecipes() {
-        List<RecipeView[]> rows = recipeRepository.findRecipes();
-        return rows;
-    }
-
-    public List<RecipeView[]> getAllRecipes() {
-        List<RecipeView[]> rows = recipeRepository.findAllRecipeDetails();
+    public List<RecipeView> getAllRecipes() {
+        List<RecipeView> rows = recipeRepository.findRecipes();
         return rows;
     }
 

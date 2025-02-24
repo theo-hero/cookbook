@@ -22,10 +22,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     @Query(value = "SELECT name FROM unit", nativeQuery = true)
     List<String> findAllUnitNames();
 
-    @Query(value = "SELECT * FROM recipe_view rv", nativeQuery = true)
-    List<RecipeView[]> findAllRecipeDetails();
+    @Query(value = "SELECT * FROM recipe_view2 rv", nativeQuery = true)
+    List<RecipeView> findAllRecipeDetails();
 
-    @Query(value = "SELECT * FROM recipe_view rv WHERE rv.id = :recipeId", nativeQuery = true)
+    @Query(value = "SELECT * FROM recipe_view2 rv WHERE rv.id = :recipeId", nativeQuery = true)
     RecipeView findRecipeDetailsById(@Param("recipeId") Long recipeId);
 
     @Query(value = "SELECT " +
@@ -34,14 +34,8 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
             "r.description, " +
             "r.instruction, " +
             "r.img_url, " +
-            "COALESCE(jsonb_agg( " +
-            "DISTINCT jsonb_build_object( " +
-            "'ingredientName', i.name, " +
-            "'quantity', ri.quantity, " +
-            "'unitName', u.name " +
-            ") " +
-            ") FILTER (WHERE ri.recipe_id IS NOT NULL), '[]') AS ingredients, " +
-            "COALESCE(jsonb_agg(DISTINCT t.name) FILTER (WHERE rt.recipe_id IS NOT NULL), '[]') AS tags " +
+            "COALESCE(string_agg(DISTINCT i.name || '*' || ri.quantity || '*' || u.name, ':'), '') AS ingredients, " +
+            "COALESCE(string_agg(DISTINCT t.name, '*'), '') AS tags " +
             "FROM " +
             "recipe r " +
             "LEFT JOIN " +
@@ -56,5 +50,5 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
             "tag t ON rt.tag_id = t.id " +
             "GROUP BY " +
             "r.id, r.title, r.description, r.instruction, r.img_url", nativeQuery = true)
-    List<RecipeView[]> findRecipes();
+    List<RecipeView> findRecipes();
 }

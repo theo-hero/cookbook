@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.util.List;
 
@@ -26,13 +29,8 @@ public class RecipeController {
     @Autowired
     private RecipeService recipeService;
 
-    @GetMapping("/test")
-    public List<RecipeView[]> getRecipes() {
-        return recipeService.getRecipes();
-    }
-
     @GetMapping
-    public List<RecipeView[]> getAllRecipes() {
+    public List<RecipeView> getRecipes() {
         return recipeService.getAllRecipes();
     }
 
@@ -75,7 +73,11 @@ public class RecipeController {
     public ResponseEntity<?> createRecipe(@RequestBody RecipeDTO recipeDto) {
         try {
             Recipe createdRecipe = recipeService.createRecipe(recipeDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdRecipe);
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Recipe created successfully");
+            responseBody.put("recipeId", createdRecipe.getId()); 
+            responseBody.put("title", createdRecipe.getTitle()); 
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
