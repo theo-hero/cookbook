@@ -23,10 +23,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
     @Query(value = "SELECT name FROM unit", nativeQuery = true)
     List<String> findAllUnitNames();
 
-    @Query(value = "SELECT * FROM recipe_view2 rv", nativeQuery = true)
+    @Query(value = "SELECT * FROM recipe_view rv", nativeQuery = true)
     List<RecipeView> findAllRecipeDetails();
 
-    @Query(value = "SELECT * FROM recipe_view2 rv WHERE rv.id = :recipeId", nativeQuery = true)
+    @Query(value = "SELECT * FROM recipe_view rv WHERE rv.id = :recipeId", nativeQuery = true)
     RecipeView findRecipeDetailsById(@Param("recipeId") Long recipeId);
 
     @Query(value = "SELECT " +
@@ -78,5 +78,5 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
             "WHERE r.id = :recipeId " +
             "GROUP BY " +
             "r.id, r.title, r.description, r.instruction, r.img_url", nativeQuery = true)
-    Optional<RecipeView> findRecipeById(@Param("recipeId") Long recipeId);
+    RecipeView findRecipeById(@Param("recipeId") Long recipeId);
 }
