@@ -1,5 +1,7 @@
 package com.example.recipe_book.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -17,6 +19,7 @@ public class RecipeView {
     private String img_url;
     private String ingredients; 
     private String tags; 
+    private LocalDate dateCreated;
 
     public Long getId() {
         return id;
@@ -64,6 +67,14 @@ public class RecipeView {
 
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public String getTags() {

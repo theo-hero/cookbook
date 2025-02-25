@@ -1,6 +1,8 @@
 package com.example.recipe_book.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,13 @@ public class Recipe {
     private String description;
     private String instruction;
     private String img_url;
+    @Column(name = "date_created", nullable = false)
+    private LocalDate dateCreated;
+
+    // @PrePersist
+    // protected void onCreate() {
+    //     dateCreated = LocalDate.now(); 
+    // }
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RecipeIngredients> ingredients = new ArrayList<>();
@@ -77,6 +86,14 @@ public class Recipe {
 
     public void setIngredients(List<RecipeIngredients> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     // public Set<Tag> getTags() {

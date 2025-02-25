@@ -1,5 +1,6 @@
 package com.example.recipe_book;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class RecipeDTO {
@@ -8,6 +9,7 @@ public class RecipeDTO {
     private String instruction;
     private String img_url;
     private List<RecipeIngredientDTO> ingredients;
+    private LocalDate dateCreated;
     // private List<String> tags;
 
     public String getTitle() {
@@ -48,6 +50,14 @@ public class RecipeDTO {
 
     public void setIngredients(List<RecipeIngredientDTO> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     // public List<String> getTags() {

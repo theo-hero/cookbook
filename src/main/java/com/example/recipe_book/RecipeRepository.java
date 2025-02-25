@@ -9,6 +9,7 @@ import com.example.recipe_book.model.Recipe;
 import com.example.recipe_book.model.RecipeView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends CrudRepository<Recipe, Long> {
@@ -34,6 +35,7 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
             "r.description, " +
             "r.instruction, " +
             "r.img_url, " +
+            "r.date_created, " +
             "COALESCE(string_agg(DISTINCT i.name || '*' || ri.quantity || '*' || u.name, ':'), '') AS ingredients, " +
             "COALESCE(string_agg(DISTINCT t.name, '*'), '') AS tags " +
             "FROM " +
@@ -51,4 +53,30 @@ public interface RecipeRepository extends CrudRepository<Recipe, Long> {
             "GROUP BY " +
             "r.id, r.title, r.description, r.instruction, r.img_url", nativeQuery = true)
     List<RecipeView> findRecipes();
+
+    @Query(value = "SELECT " +
+            "r.id, " +
+            "r.title, " +
+            "r.description, " +
+            "r.instruction, " +
+            "r.img_url, " +
+            "r.date_created, " +
+            "COALESCE(string_agg(DISTINCT i.name || '*' || ri.quantity || '*' || u.name, ':'), '') AS ingredients, " +
+            "COALESCE(string_agg(DISTINCT t.name, '*'), '') AS tags " +
+            "FROM " +
+            "recipe r " +
+            "LEFT JOIN " +
+            "recipe_ingredients ri ON r.id = ri.recipe_id " +
+            "LEFT JOIN " +
+            "ingredient i ON ri.ingredient_id = i.id " +
+            "LEFT JOIN " +
+            "unit u ON ri.unit_id = u.id " +
+            "LEFT JOIN " +
+            "recipe_tags rt ON r.id = rt.recipe_id " +
+            "LEFT JOIN " +
+            "tag t ON rt.tag_id = t.id " +
+            "WHERE r.id = :recipeId " +
+            "GROUP BY " +
+            "r.id, r.title, r.description, r.instruction, r.img_url", nativeQuery = true)
+    Optional<RecipeView> findRecipeById(@Param("recipeId") Long recipeId);
 }
