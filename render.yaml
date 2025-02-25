@@ -1,0 +1,10 @@
+env: custom  
+buildCommand: |
+  apt-get update && apt-get install -y openjdk-17-jdk-headless
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+  curl -s https://apache.jfrog.io/artifactory/oss-release-local/org/apache/maven/apache-maven/3.8.6/apache-maven-3.8.6-bin.tar.gz | tar xz -C /tmp
+  export PATH=/tmp/apache-maven-3.8.6/bin:$PATH
+
+  mvn clean package
+startCommand: java -jar target/recipe-book-0.0.1-SNAPSHOT.jar
